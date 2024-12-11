@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap');
+
 
 body {
     display: grid;
@@ -7,8 +9,9 @@ body {
     padding: 0;
     background-color: #2C2C2C;
     color: white;
-    user-select:none;
+    user-select: none;
     position: relative;
+    font-family: "Quicksand", sans-serif;
 }
 
 .main {
@@ -38,6 +41,10 @@ body {
 
 .upgrade-img {
     width: 50px;
+}
+
+.joe-img-container {
+    position: relative;
 }
 
 .joe-img {
@@ -99,8 +106,43 @@ body {
     transform: translate(-50%)
 }
 
-.texts {
+.text {
     display: flex;
     gap: 100px;
-    justify-content
+    justify-content: center;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.fade-up {
+    animation: fade-up 1s;
+}
+
+
+@keyframes fade-up {
+    0% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+
+    20% {
+        transform: translateY(-5px);
+        opacity: 0.8;
+    }
+    40% {
+        transform: translateY(-13px);
+        opacity: 0.75;
+    }
+    60% {
+        transform: translateY(-25px);
+        opacity: 0.55;
+    }
+    80% {
+        transform: translateY(-42px);
+        opacity: 0.3;
+    }
+    100% {
+        transform: translateY(-65px);
+        opacity: 0;
+    }
 }
