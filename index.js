@@ -152,15 +152,38 @@ function buyBrian() {
 }
 
 function save () {
+    localStorage.clear()
 
+    upgrades.map((upgrade) => {
+
+        const obj = JSON.stringify({
+            parsedLevel: parseFloat(upgrade.level.innerHTML),
+            parsedCost: upgrade.parsedCost,
+            parsedIncrease: upgrade.parsedIncrease
+        })
+
+        localStorage.setItem(upgrade.name, obj)
+
+    })
+    localStorage.setItem('jpc', JSON.stringify(jpc))
+    localStorage.setItem('jps', JSON.stringify(jps))
+    localStorage.setItem('joe', JSON.stringify(ParsedJoe))
 }
 
 function load () {
+    upgrades.map((upgrade) => {
+        const savedValue = JSON.parse(localStorage.getItem(upgrade.name))
 
-}
-setInterval(() => {
-    parsedJoe += jps /10
+        upgrade.parsedCost = savedValue.parsedCost
+        upgrade.parsedIncrease = savedValues.parsedIncrease
+
+        upgrade.level.inerHTML = savedValue.parsedLevel
+        upgrade.cost.innerHTML = Math.round(upgrade.parsedCost)
+        upgrade.increase.innerHTML = upgrade.parsedIncrease
+    })
+    jpc = JSON.parse(localStorage.getItem('jpc'))
+    jps = JSON.parse(localStorage.getItem('jps'))
+    prasedJoe = JSON.parse(localStorage.getItem('joe'))
+
     joe.innerHTML = Math.round(parsedJoe)
-    jpcText.innerHTML = Math.round(jpc)
-    jpsText.innerHTML = Math.round(jps);
-}, 100)
+}
