@@ -151,6 +151,13 @@ function buyBrian() {
     }
 }
 
+function save () {
+
+}
+
+function load () {
+
+}
 setInterval(() => {
     parsedJoe += jps /10
     joe.innerHTML = Math.round(parsedJoe)

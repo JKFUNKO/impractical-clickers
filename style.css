@@ -114,6 +114,27 @@ body {
     font-size: 20px;
 }
 
+/* (Im not sure whats going on with this ill fix it at some point )
+    .util-buttons {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+}
+*/
+
+.util-buttons {
+    padding: 8px 13px;
+    font-size: 16px;
+    font-weight: 600;
+    font-family: inherit;
+    border-radius: 6px;
+}
+
+.util-button:hover {
+    opacity: 0.7;
+    cursor: pointer;
+}
+
 .fade-up {
     animation: fade-up 1s;
 }
