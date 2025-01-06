@@ -167,15 +167,17 @@ function save () {
     })
     localStorage.setItem('jpc', JSON.stringify(jpc))
     localStorage.setItem('jps', JSON.stringify(jps))
-    localStorage.setItem('joe', JSON.stringify(ParsedJoe))
+    localStorage.setItem('joe', JSON.stringify(parsedJoe))
 }
 
 function load () {
     upgrades.map((upgrade) => {
+
         const savedValue = JSON.parse(localStorage.getItem(upgrade.name))
+        console.log(savedValue);
 
         upgrade.parsedCost = savedValue.parsedCost
-        upgrade.parsedIncrease = savedValues.parsedIncrease
+        upgrade.parsedIncrease = savedValue.parsedIncrease
 
         upgrade.level.inerHTML = savedValue.parsedLevel
         upgrade.cost.innerHTML = Math.round(upgrade.parsedCost)
