@@ -44,10 +44,10 @@ const upgrades = [
         cost: document.querySelector('.sal-cost'),
         parsedCost: parseFloat(document.querySelector('.sal-cost').innerHTML),
         increase: document.querySelector('.sal-increase'),
-            parsedIncrease: parseFloat(document.querySelector('.sal-increase').innerHTML),
-            level: document.querySelector('.sal-level'),
+        parsedIncrease: parseFloat(document.querySelector('.sal-increase').innerHTML),
+        level: document.querySelector('.sal-level'),
         joeMultiplier: 1.025,
-            costMultiplier: 1.12,
+        costMultiplier: 1.12,
     },
     {
         name: 'brian',
@@ -57,7 +57,7 @@ const upgrades = [
         parsedIncrease: parseFloat(document.querySelector('.brian-increase').innerHTML),
         level: document.querySelector('.brian-level'),
         joeMultiplier: 1.025,
-            costMultiplier: 1.12,
+        costMultiplier: 1.12,
     },
 ]
 
@@ -82,7 +82,7 @@ function incrementJoe(event) {
 
 const timeout = (div) => {
     setTimeout(() => {
-    div.remove()
+        div.remove()
     }, 800)
 }
 
@@ -107,10 +107,10 @@ function buyUpgrade(upgrade) {
 
 
 function buyMurray() {
-     if (parsedJoe >= parsedMurrayCost) {
-         joe.innerHTML = Math.round(parsedJoe -= parsedMurrayCost);
+    if (parsedJoe >= parsedMurrayCost) {
+        joe.innerHTML = Math.round(parsedJoe -= parsedMurrayCost);
 
-        murrayLevel.innerHTML ++
+        murrayLevel.innerHTML++
 
         parsedMurrayIncrease = parseFloat((parsedMurrayIncrease * 1.03).toFixed(2))
         murrayIncrease.innerHTML = parsedMurrayIncrease
@@ -151,41 +151,9 @@ function buyBrian() {
     }
 }
 
-function save () {
-    localStorage.clear()
-
-    upgrades.map((upgrade) => {
-
-        const obj = JSON.stringify({
-            parsedLevel: parseFloat(upgrade.level.innerHTML),
-            parsedCost: upgrade.parsedCost,
-            parsedIncrease: upgrade.parsedIncrease
-        })
-
-        localStorage.setItem(upgrade.name, obj)
-
-    })
-    localStorage.setItem('jpc', JSON.stringify(jpc))
-    localStorage.setItem('jps', JSON.stringify(jps))
-    localStorage.setItem('joe', JSON.stringify(parsedJoe))
-}
-
-function load () {
-    upgrades.map((upgrade) => {
-
-        const savedValue = JSON.parse(localStorage.getItem(upgrade.name))
-        console.log(savedValue);
-
-        upgrade.parsedCost = savedValue.parsedCost
-        upgrade.parsedIncrease = savedValue.parsedIncrease
-
-        upgrade.level.inerHTML = savedValue.parsedLevel
-        upgrade.cost.innerHTML = Math.round(upgrade.parsedCost)
-        upgrade.increase.innerHTML = upgrade.parsedIncrease
-    })
-    jpc = JSON.parse(localStorage.getItem('jpc'))
-    jps = JSON.parse(localStorage.getItem('jps'))
-    prasedJoe = JSON.parse(localStorage.getItem('joe'))
-
+setInterval(() => {
+    parsedJoe += jps / 10
     joe.innerHTML = Math.round(parsedJoe)
-}
+    jpcText.innerHTML = Math.round(jpc)
+    jpsText.innerHTML = Math.round(jps);
+}, 100)
