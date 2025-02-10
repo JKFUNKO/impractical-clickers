@@ -63,6 +63,73 @@ const upgrades = [
 
 console.log(upgrades[0].name)
 
+function saveGame() {
+    const gameData = {
+        joes: parsedJoe,
+        jpc: jpc,
+        jps: jps,
+        murray: {
+            level: parseInt(murrayLevel.innerHTML),
+            cost: parsedMurrayCost,
+            increase: parsedMurrayIncrease
+        },
+        sal: {
+            level: parseInt(salLevel.innerHTML),
+            cost: parsedSalCost,
+            increase: parsedSalIncrease
+        },
+        brian: {
+            level: parseInt(brianLevel.innerHTML),
+            cost: parsedBrianCost,
+            increase: parsedBrianIncrease
+        }
+    };
+    localStorage.setItem('clickerSave', JSON.stringify(gameData));
+}
+
+function loadGame() {
+    const savedGame = localStorage.getItem('clickerSave');
+    if (savedGame) {
+        const gameData = JSON.parse(savedGame);
+        
+        // Load main values
+        parsedJoe = gameData.joes;
+        jpc = gameData.jpc;
+        jps = gameData.jps;
+        joe.innerHTML = Math.round(parsedJoe);
+        
+        // Load Murray
+        murrayLevel.innerHTML = gameData.murray.level;
+        parsedMurrayCost = gameData.murray.cost;
+        parsedMurrayIncrease = gameData.murray.increase;
+        murrayCost.innerHTML = Math.round(parsedMurrayCost);
+        murrayIncrease.innerHTML = parsedMurrayIncrease;
+        // Update Murray in upgrades array
+        upgrades[0].parsedCost = parsedMurrayCost;
+        upgrades[0].parsedIncrease = parsedMurrayIncrease;
+        
+        // Load Sal
+        salLevel.innerHTML = gameData.sal.level;
+        parsedSalCost = gameData.sal.cost;
+        parsedSalIncrease = gameData.sal.increase;
+        salCost.innerHTML = Math.round(parsedSalCost);
+        salIncrease.innerHTML = parsedSalIncrease;
+        // Update Sal in upgrades array
+        upgrades[1].parsedCost = parsedSalCost;
+        upgrades[1].parsedIncrease = parsedSalIncrease;
+        
+        // Load Brian
+        brianLevel.innerHTML = gameData.brian.level;
+        parsedBrianCost = gameData.brian.cost;
+        parsedBrianIncrease = gameData.brian.increase;
+        brianCost.innerHTML = Math.round(parsedBrianCost);
+        brianIncrease.innerHTML = parsedBrianIncrease;
+        // Update Brian in upgrades array
+        upgrades[2].parsedCost = parsedBrianCost;
+        upgrades[2].parsedIncrease = parsedBrianIncrease;
+    }
+}
+
 function incrementJoe(event) {
     joe.innerHTML = Math.round(parsedJoe += jpc)
 
@@ -70,7 +137,7 @@ function incrementJoe(event) {
     const y = event.offsetY
 
     const div = document.createElement('div')
-    div.innerHTML = `+${jpc}`
+    div.innerHTML = `+${Math.round(jpc)}`
     div.style.cssText = 'color:white; position: absolute; top: $(y)px; left: $(x)px; font-size: 15px; pointer-events: none;'
     joeImgContrainer.appendChild(div)
 
@@ -96,15 +163,36 @@ function buyUpgrade(upgrade) {
 
         matchedUpgrade.level.innerHTML++
 
-        matchedUpgrade.parsedIncrease = parseFloat((matchedUpgrade.parsedIncrease * matchedUpgrade.joeMultiplier).toFixed(2))
-        matchedUpgrade.increase.innerHTML = matchedUpgrade.parsedIncrease
-        jpc += matchedUpgrade.parsedIncrease
+        // Update both the upgrades array and individual variables
+        if (upgrade === 'murray') {
+            parsedMurrayIncrease = parseFloat((parsedMurrayIncrease * matchedUpgrade.joeMultiplier).toFixed(2));
+            parsedMurrayCost *= matchedUpgrade.costMultiplier;
+            jpc += parsedMurrayIncrease;
+        } else if (upgrade === 'sal') {
+            parsedSalIncrease = parseFloat((parsedSalIncrease * matchedUpgrade.joeMultiplier).toFixed(2));
+            parsedSalCost *= matchedUpgrade.costMultiplier;
+            jps += parsedSalIncrease;
+        } else if (upgrade === 'brian') {
+            parsedBrianIncrease = parseFloat((parsedBrianIncrease * matchedUpgrade.joeMultiplier).toFixed(2));
+            parsedBrianCost *= matchedUpgrade.costMultiplier;
+            jps += parsedBrianIncrease;
+        }
 
+        // Update the upgrades array
+        matchedUpgrade.parsedIncrease = parseFloat((matchedUpgrade.parsedIncrease * matchedUpgrade.joeMultiplier).toFixed(2));
+        matchedUpgrade.increase.innerHTML = matchedUpgrade.parsedIncrease;
         matchedUpgrade.parsedCost *= matchedUpgrade.costMultiplier;
-        matchedUpgrade.cost.innerHTML = Math.round(matchedUpgrade.parsedCost)
+        matchedUpgrade.cost.innerHTML = Math.round(matchedUpgrade.parsedCost);
+
+        // Save after each upgrade purchase
+        saveGame();
     }
 }
 
+function resetGame() {
+    localStorage.removeItem('clickerSave');
+    location.reload();
+}
 
 function buyMurray() {
     if (parsedJoe >= parsedMurrayCost) {
@@ -157,3 +245,9 @@ setInterval(() => {
     jpcText.innerHTML = Math.round(jpc)
     jpsText.innerHTML = Math.round(jps);
 }, 100)
+
+// Auto-save every 30 seconds
+setInterval(saveGame, 30000);
+
+// Load saved game when page loads
+window.onload = loadGame;
